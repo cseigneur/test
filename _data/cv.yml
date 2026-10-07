@@ -1,0 +1,90 @@
+# Toutes les informations du CV sont ici : modifiez ce fichier, le site se met à jour tout seul.
+
+name: Prénom Nom
+title: Votre métier / intitulé de poste
+location: Paris, France
+email: vous@example.com
+phone: "+33 6 00 00 00 00"
+photo: "" # ex. /assets/images/photo.jpg (laisser vide pour afficher les initiales)
+cv_pdf: "" # ex. /assets/cv.pdf (laisser vide pour masquer le bouton)
+summary: >-
+  Deux ou trois phrases qui vous présentent : ce que vous faites, ce qui vous
+  motive et ce que vous apportez à une équipe.
+
+links:
+  - label: LinkedIn
+    url: https://www.linkedin.com/in/votre-profil
+  - label: GitHub
+    url: https://github.com/votre-profil
+
+stats:
+  - value: "5+"
+    label: années d'expérience
+  - value: "20+"
+    label: projets livrés
+  - value: "3"
+    label: langues
+
+experiences:
+  - role: Intitulé du poste
+    company: Entreprise A
+    location: Paris
+    start: "2023"
+    end: Aujourd'hui
+    description: Une phrase qui résume votre rôle et votre périmètre.
+    highlights:
+      - Réalisation chiffrée n°1 (ex. +30 % de conversion)
+      - Réalisation n°2
+      - Réalisation n°3
+    tags: [Outil 1, Outil 2, Compétence]
+
+  - role: Intitulé du poste
+    company: Entreprise B
+    location: Lyon
+    start: "2020"
+    end: "2023"
+    description: Une phrase qui résume votre rôle et votre périmètre.
+    highlights:
+      - Réalisation n°1
+      - Réalisation n°2
+    tags: [Outil 3, Gestion de projet]
+
+  - role: Stage / premier poste
+    company: Entreprise C
+    location: Bordeaux
+    start: "2019"
+    end: "2020"
+    description: Une phrase qui résume votre rôle et votre périmètre.
+    highlights:
+      - Réalisation n°1
+    tags: [Compétence]
+
+education:
+  - degree: Master / diplôme
+    school: École ou université
+    start: "2017"
+    end: "2019"
+    description: Spécialité, mention, projet marquant.
+  - degree: Licence / Bootcamp
+    school: École ou université
+    start: "2014"
+    end: "2017"
+    description: ""
+
+skills:
+  - group: Compétences clés
+    items: [Compétence 1, Compétence 2, Compétence 3, Compétence 4]
+  - group: Outils
+    items: [Outil 1, Outil 2, Outil 3]
+  - group: Savoir-être
+    items: [Leadership, Communication, Autonomie]
+
+languages:
+  - name: Français
+    level: Langue maternelle
+  - name: Anglais
+    level: Courant (C1)
+  - name: Espagnol
+    level: Intermédiaire (B1)
+
+interests: [Voyage, Sport, Photographie]
