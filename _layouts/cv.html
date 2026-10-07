@@ -1,171 +1,268 @@
 {%- assign cv = site.data.cv -%}
+{%- assign span = cv.gantt.end | minus: cv.gantt.start -%}
+{%- assign last_tick = cv.gantt.end | minus: 1 -%}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ cv.name }} · {{ cv.title }}</title>
-  <meta name="description" content="{{ cv.summary | strip_html | normalize_whitespace | truncate: 160 | escape }}">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>{{ cv.name }}</title>
+  <meta name="description" content="{{ cv.tagline | strip_html | normalize_whitespace | truncate: 160 | escape }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
   <link rel="stylesheet" href="{{ '/assets/cv.css' | relative_url }}">
   <script>
     try { var t = localStorage.getItem('cv-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
   </script>
 </head>
 <body>
-  <nav class="nav">
-    <div class="wrap nav-inner">
-      <a href="#top" class="brand">{{ cv.name }}</a>
+  <a class="skip" href="#profil">Aller au contenu</a>
+
+  <nav class="nav" id="nav">
+    <div class="shell nav-inner">
+      <a href="#top" class="brand" aria-label="Haut de page">
+        <span class="brand-mark">CS</span>
+        <span class="brand-name">{{ cv.name }}</span>
+      </a>
       <div class="nav-links">
-        <a href="#experience">Expérience</a>
-        <a href="#education">Formation</a>
-        <a href="#skills">Compétences</a>
-        <a href="#contact">Contact</a>
-        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Changer de thème">◐</button>
+        <a href="#profil">Profil</a>
+        <a href="#parcours">Parcours</a>
+        <a href="#formation">Formation</a>
+        <a href="#competences">Compétences</a>
+      </div>
+      <div class="nav-end">
+        <button class="icon-btn" id="theme-toggle" type="button" aria-label="Changer de thème">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 3.5a8.5 8.5 0 0 1 0 17z" fill="currentColor"/></svg>
+        </button>
+        <a class="btn btn-solid btn-sm magnetic" href="#contact">Me contacter</a>
       </div>
     </div>
   </nav>
 
   <header class="hero" id="top">
-    <div class="wrap hero-inner">
-      <div class="avatar">
-        {%- if cv.photo != "" and cv.photo -%}
-          <img src="{{ cv.photo | relative_url }}" alt="Photo de {{ cv.name }}">
-        {%- else -%}
-          {%- assign parts = cv.name | split: " " -%}
-          <span>{% for p in parts limit: 2 %}{{ p | slice: 0 }}{% endfor %}</span>
-        {%- endif -%}
-      </div>
-      <div>
-        <p class="eyebrow">{{ cv.location }}</p>
-        <h1>{{ cv.name }}</h1>
-        <p class="role">{{ cv.title }}</p>
-        <p class="summary">{{ cv.summary }}</p>
-        <div class="actions">
-          <a class="btn btn-primary" href="mailto:{{ cv.email }}">Me contacter</a>
-          {%- if cv.cv_pdf != "" and cv.cv_pdf %}
-          <a class="btn" href="{{ cv.cv_pdf | relative_url }}" download>Télécharger le CV</a>
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="shell hero-inner">
+      <p class="hero-eyebrow mono"><span class="pulse" aria-hidden="true"></span>{{ cv.status }} · {{ cv.location }}</p>
+      <h1 class="hero-name" aria-label="{{ cv.name }}">
+        <span class="hero-line"><span>{{ cv.first_name }}</span></span>
+        <span class="hero-line hero-line-2"><span>{{ cv.last_name }}</span></span>
+      </h1>
+      {%- if cv.photo and cv.photo != "" %}
+      <figure class="hero-portrait">
+        <img src="{{ cv.photo | relative_url }}" alt="Portrait de {{ cv.name }}" width="780" height="595">
+      </figure>
+      {%- endif %}
+      <div class="hero-bottom">
+        <p class="hero-role">{{ cv.title }}</p>
+        <p class="hero-lede">{{ cv.tagline }}</p>
+        <div class="hero-actions">
+          <a class="btn btn-solid magnetic" href="#parcours">Voir mon parcours <span aria-hidden="true">↓</span></a>
+          <a class="btn btn-ghost magnetic" href="{{ cv.linkedin }}" target="_blank" rel="noopener">LinkedIn <span aria-hidden="true">↗</span></a>
+          {%- if cv.cv_pdf and cv.cv_pdf != "" %}
+          <a class="btn btn-ghost magnetic pdf-link" href="{{ cv.cv_pdf | relative_url }}" download>CV en PDF</a>
           {%- endif %}
-          {%- for link in cv.links %}
-          <a class="btn" href="{{ link.url }}" target="_blank" rel="noopener">{{ link.label }}</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="shell">
+      <div class="gantt-scroll">
+        <div class="gantt" role="img" aria-label="Frise du parcours de {{ cv.gantt.start }} à {{ last_tick }}">
+          <div class="gantt-row gantt-axis mono">
+            <span class="gantt-label">Parcours</span>
+            <div class="gantt-track">
+              {%- for y in (cv.gantt.start..last_tick) %}
+              {%- assign l = y | minus: cv.gantt.start | times: 100.0 | divided_by: span %}
+              <span class="gantt-year" style="left: {{ l | round: 3 }}%">{{ y }}</span>
+              {%- endfor %}
+            </div>
+          </div>
+          {%- for row in cv.gantt.rows %}
+          <div class="gantt-row">
+            <span class="gantt-label mono">{{ row.label }}</span>
+            <div class="gantt-track">
+              {%- for b in row.bars %}
+              {%- assign l = b.from | minus: cv.gantt.start | times: 100.0 | divided_by: span %}
+              {%- assign w = b.to | minus: b.from | times: 100.0 | divided_by: span %}
+              <div class="gantt-bar is-{{ row.kind }}{% if b.dashed %} is-dashed{% endif %}" style="left: {{ l | round: 3 }}%; width: {{ w | round: 3 }}%">
+                <span class="gantt-text is-{{ b.place | default: 'above' }}{% if b.align == 'end' %} is-end{% endif %}">{{ b.label }}</span>
+              </div>
+              {%- endfor %}
+            </div>
+          </div>
           {%- endfor %}
         </div>
       </div>
     </div>
-    {%- if cv.stats %}
-    <div class="wrap stats">
-      {%- for s in cv.stats %}
-      <div class="stat reveal"><strong>{{ s.value }}</strong><span>{{ s.label }}</span></div>
-      {%- endfor %}
+
+    <div class="ticker mono" aria-hidden="true">
+      <div class="ticker-track">
+        {%- for round in (1..2) %}
+        <div class="ticker-group">
+          {%- for t in cv.ticker %}<span class="ticker-item"><i>▲</i>{{ t }}</span>{% endfor %}
+        </div>
+        {%- endfor %}
+      </div>
     </div>
-    {%- endif %}
   </header>
 
-  <main class="wrap">
-    <section id="experience" class="section">
-      <h2 class="section-title"><span>01</span> Expérience professionnelle</h2>
-      <ol class="timeline">
-        {%- for job in cv.experiences %}
-        <li class="timeline-item reveal">
-          <div class="card">
-            <div class="card-head">
-              <div>
-                <h3>{{ job.role }}</h3>
-                <p class="company">{{ job.company }}{% if job.location and job.location != "" %} · {{ job.location }}{% endif %}</p>
-              </div>
-              <span class="period">{{ job.start }} — {{ job.end }}</span>
+  <main>
+    <section class="section" id="profil">
+      <div class="shell split">
+        <div class="split-head">
+          <p class="eyebrow mono">Profil</p>
+          <h2 class="section-title" data-reveal>Finance d'abord, data ensuite.</h2>
+        </div>
+        <div class="split-body">
+          <p class="manifesto" data-words>{{ cv.summary }}</p>
+          <dl class="stats">
+            {%- for s in cv.stats %}
+            <div class="stat" data-reveal>
+              <dt class="stat-value"><span class="count" data-count="{{ s.value }}">{{ s.value }}</span>{% if s.unit != "" %}<small>{{ s.unit }}</small>{% endif %}</dt>
+              <dd>{{ s.label }}</dd>
             </div>
-            {%- if job.description and job.description != "" %}
-            <p class="desc">{{ job.description }}</p>
-            {%- endif %}
-            {%- if job.highlights.size > 0 %}
-            <ul class="highlights">
-              {%- for h in job.highlights %}<li>{{ h }}</li>{% endfor %}
-            </ul>
-            {%- endif %}
-            {%- if job.tags.size > 0 %}
-            <div class="tags">{% for t in job.tags %}<span class="tag">{{ t }}</span>{% endfor %}</div>
-            {%- endif %}
+            {%- endfor %}
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="parcours">
+      <div class="shell split">
+        <div class="split-head sticky">
+          <p class="eyebrow mono">Parcours</p>
+          <h2 class="section-title" data-reveal>Trois ans au cœur de l'investissement.</h2>
+          <div class="rail" aria-hidden="true"><span class="rail-fill"></span></div>
+        </div>
+        <ol class="split-body jobs">
+          <li class="job is-transition" data-reveal>
+            <p class="job-period mono">{{ cv.transition.period }}</p>
+            <div>
+              <h3 class="job-role">Année de transition</h3>
+              <p class="job-text">{{ cv.transition.text }}</p>
+            </div>
+          </li>
+          {%- for job in cv.experiences %}
+          <li class="job" data-reveal>
+            <p class="job-period mono">{{ job.period }}<span>{{ job.duration }}</span></p>
+            <div>
+              <h3 class="job-role">{{ job.role }}</h3>
+              <p class="job-company">{{ job.company }} <span>· {{ job.location }}</span></p>
+              <ul class="job-points">
+                {%- for h in job.highlights %}<li>{{ h }}</li>{% endfor %}
+              </ul>
+              <p class="chips">{% for t in job.tags %}<span class="chip">{{ t }}</span>{% endfor %}</p>
+            </div>
+          </li>
+          {%- endfor %}
+        </ol>
+      </div>
+    </section>
+
+    <section class="section" id="formation">
+      <div class="shell split">
+        <div class="split-head">
+          <p class="eyebrow mono">Formation</p>
+          <h2 class="section-title" data-reveal>Une école de commerce, puis la data.</h2>
+        </div>
+        <ul class="split-body schools">
+          {%- for ed in cv.education %}
+          <li class="school" data-reveal>
+            <span class="school-period mono">{{ ed.period }}</span>
+            <div>
+              <h3 class="school-degree">{{ ed.degree }}</h3>
+              <p class="school-name">{{ ed.school }}</p>
+              {%- if ed.description != "" %}<p class="school-desc">{{ ed.description }}</p>{% endif %}
+            </div>
+          </li>
+          {%- endfor %}
+        </ul>
+      </div>
+    </section>
+
+    <section class="section" id="competences">
+      <div class="shell">
+        <div class="section-head">
+          <p class="eyebrow mono">Compétences</p>
+          <h2 class="section-title" data-reveal>Les outils du métier.</h2>
+        </div>
+        <div class="skills">
+          {%- for g in cv.skills %}
+          <div class="skill-col" data-reveal>
+            <h3 class="skill-title mono">{{ g.group }}</h3>
+            <ul class="skill-list">{% for i in g.items %}<li>{{ i }}</li>{% endfor %}</ul>
           </div>
-        </li>
-        {%- endfor %}
-      </ol>
-    </section>
-
-    <section id="education" class="section">
-      <h2 class="section-title"><span>02</span> Formation</h2>
-      <div class="grid-2">
-        {%- for ed in cv.education %}
-        <div class="card reveal">
-          <span class="period">{% if ed.start and ed.start != "" %}{{ ed.start }} — {% endif %}{{ ed.end }}</span>
-          <h3>{{ ed.degree }}</h3>
-          <p class="company">{{ ed.school }}</p>
-          {%- if ed.description and ed.description != "" %}<p class="desc">{{ ed.description }}</p>{% endif %}
+          {%- endfor %}
         </div>
-        {%- endfor %}
+        <div class="extras">
+          <div class="extra" data-reveal>
+            <h3 class="skill-title mono">Certifications</h3>
+            <p class="certs">{% for c in cv.certifications %}<span class="cert">{{ c }}</span>{% endfor %}</p>
+          </div>
+          <div class="extra" data-reveal>
+            <h3 class="skill-title mono">Langues</h3>
+            <ul class="langs">
+              {%- for l in cv.languages %}
+              <li><strong>{{ l.name }}</strong><span class="lang-level">{{ l.level }}</span><span class="dots" aria-hidden="true">{% for i in (1..3) %}<i{% if i <= l.dots %} class="on"{% endif %}></i>{% endfor %}</span></li>
+              {%- endfor %}
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section id="skills" class="section">
-      <h2 class="section-title"><span>03</span> Compétences</h2>
-      <div class="grid-3">
-        {%- for g in cv.skills %}
-        <div class="card reveal">
-          <h3>{{ g.group }}</h3>
-          <div class="tags">{% for i in g.items %}<span class="tag">{{ i }}</span>{% endfor %}</div>
+    <section class="section" id="hors-bureau">
+      <div class="shell">
+        <div class="section-head">
+          <p class="eyebrow mono">Hors du bureau</p>
+          <h2 class="section-title" data-reveal>L'esprit d'équipe, sur le terrain aussi.</h2>
         </div>
-        {%- endfor %}
-      </div>
-      <div class="grid-2 mt">
-        {%- if cv.languages %}
-        <div class="card reveal">
-          <h3>Langues</h3>
-          <ul class="lang">
-            {%- for l in cv.languages %}<li><strong>{{ l.name }}</strong><span>{{ l.level }}</span></li>{% endfor %}
-          </ul>
+        <div class="interests">
+          {%- for i in cv.interests %}
+          <article class="interest" data-reveal>
+            <h3>{{ i.title }}</h3>
+            <p>{{ i.text }}</p>
+          </article>
+          {%- endfor %}
         </div>
-        {%- endif %}
-        {%- if cv.interests %}
-        <div class="card reveal">
-          <h3>Centres d'intérêt</h3>
-          <div class="tags">{% for i in cv.interests %}<span class="tag">{{ i }}</span>{% endfor %}</div>
-        </div>
-        {%- endif %}
       </div>
     </section>
 
-    <section id="contact" class="section contact reveal">
-      <h2>Travaillons ensemble</h2>
-      <p>Une opportunité, une question ? N'hésitez pas à m'écrire.</p>
-      <div class="actions center">
-        <a class="btn btn-primary" href="mailto:{{ cv.email }}">{{ cv.email }}</a>
-        {%- if cv.phone %}<a class="btn" href="tel:{{ cv.phone | remove: ' ' }}">{{ cv.phone }}</a>{% endif %}
+    <section class="contact" id="contact">
+      <div class="shell">
+        <p class="eyebrow mono">Contact</p>
+        <h2 class="contact-title" data-reveal>Parlons chiffres.</h2>
+        <div class="contact-rows">
+          <div class="contact-row" data-reveal>
+            <span class="mono contact-label">E-mail</span>
+            <span class="contact-value" id="contact-email">{{ cv.email }}</span>
+            <button class="btn btn-ghost btn-sm copy" type="button" data-copy="{{ cv.email }}" data-target="contact-email">Copier</button>
+          </div>
+          <div class="contact-row" data-reveal>
+            <span class="mono contact-label">Téléphone</span>
+            <span class="contact-value" id="contact-phone">{{ cv.phone }}</span>
+            <button class="btn btn-ghost btn-sm copy" type="button" data-copy="{{ cv.phone }}" data-target="contact-phone">Copier</button>
+          </div>
+          <div class="contact-row" data-reveal>
+            <span class="mono contact-label">LinkedIn</span>
+            <span class="contact-value">in/charles-seigneur</span>
+            <a class="btn btn-solid btn-sm" href="{{ cv.linkedin }}" target="_blank" rel="noopener">Ouvrir ↗</a>
+          </div>
+        </div>
       </div>
     </section>
   </main>
 
   <footer class="footer">
-    <div class="wrap">© {{ site.time | date: "%Y" }} {{ cv.name }}</div>
+    <div class="shell footer-inner mono">
+      <span>© {{ site.time | date: "%Y" }} {{ cv.name }} · {{ cv.location }}</span>
+      <a href="#top">Haut de page ↑</a>
+    </div>
   </footer>
 
-  <script>
-    (function () {
-      var root = document.documentElement;
-      document.getElementById('theme-toggle').addEventListener('click', function () {
-        var dark = root.dataset.theme ? root.dataset.theme === 'dark'
-          : window.matchMedia('(prefers-color-scheme: dark)').matches;
-        root.dataset.theme = dark ? 'light' : 'dark';
-        try { localStorage.setItem('cv-theme', root.dataset.theme); } catch (e) {}
-      });
-      var items = document.querySelectorAll('.reveal');
-      if (!('IntersectionObserver' in window)) { items.forEach(function (el) { el.classList.add('visible'); }); return; }
-      var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
-      }, { threshold: 0.12 });
-      items.forEach(function (el) { io.observe(el); });
-    })();
-  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="{{ '/assets/cv.js' | relative_url }}"></script>
 </body>
 </html>

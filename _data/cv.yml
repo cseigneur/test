@@ -1,59 +1,95 @@
 # Toutes les informations du CV sont ici : modifiez ce fichier, le site se met à jour tout seul.
 
 name: Charles Seigneur
-title: Data Analyst — Profil Finance & Data
+first_name: Charles
+last_name: Seigneur
+title: Data Analyst — Finance & Data
 location: Paris, France
+status: Ouvert aux opportunités
 email: ccharlesseigneur@gmail.com
 phone: "06 30 65 45 75"
-photo: "" # ex. /assets/images/photo.jpg (laisser vide pour afficher les initiales)
+linkedin: https://www.linkedin.com/in/charles-seigneur/
+photo: /assets/images/portrait.webp
 cv_pdf: /assets/CV_Seigneur_Charles.pdf
-summary: >-
-  Analyste financier pendant 2 ans, spécialisé dans l'investissement immobilier
-  (business plans d'acquisition et de transformation d'actifs, dossiers
-  d'investissement), j'ai renforcé mon profil avec des compétences en Data
-  Analytics (SQL, BigQuery, Power BI). Rigoureux et à l'aise en présentation, je
-  recherche un poste me permettant de combiner analyse de marché, rédaction de
-  contenus analytiques et maîtrise de la donnée.
 
-links: [] # ex. - label: LinkedIn / url: https://www.linkedin.com/in/votre-profil
+tagline: >-
+  Deux ans d'analyse financière en investissement immobilier, puis le bootcamp
+  Data Analyst du Wagon. Je combine analyse de marché, contenus analytiques et
+  maîtrise de la donnée.
+
+summary: >-
+  Analyste financier pendant 2 ans, spécialisé dans l'investissement immobilier,
+  j'ai construit des business plans d'acquisition et de transformation d'actifs
+  et monté des dossiers d'investissement. J'ai renforcé ce profil avec SQL,
+  BigQuery et Power BI. Rigoureux et à l'aise en présentation, je cherche un
+  poste où l'analyse de marché rencontre la maîtrise de la donnée.
 
 stats:
-  - value: "3 ans"
-    label: en finance & investissement
-  - value: "Master"
-    label: Corporate Finance — PSB
-  - value: "Data"
-    label: Bootcamp Le Wagon 2026
+  - value: 3
+    unit: ans
+    label: en finance d'entreprise et d'investissement
+  - value: 3
+    unit: ""
+    label: entreprises — Generis, LUCY, MB Capital
+  - value: 6
+    unit: ""
+    label: outils data — SQL, BigQuery, Python, Power BI, Looker Studio, Git
+  - value: 3
+    unit: ""
+    label: certifications — AMF, Bloomberg, TOEIC
+
+ticker:
+  - SQL
+  - BigQuery
+  - Python · Pandas
+  - Power BI
+  - Looker Studio
+  - Git & GitHub
+  - Business plans
+  - Dossiers d'investissement
+  - Trésorerie
+  - Certifié AMF
+  - Bloomberg
+  - TOEIC
+
+# Frise du parcours (années décimales : 2022.67 ≈ septembre 2022)
+gantt:
+  start: 2018
+  end: 2027
+  rows:
+    - label: Expérience
+      kind: work
+      bars:
+        - { label: Generis, from: 2021.42, to: 2021.67, place: below }
+        - { label: LUCY, from: 2021.67, to: 2022.63, place: above }
+        - { label: MB Capital, from: 2022.67, to: 2024.71, place: above }
+        - { label: Transition, from: 2025.0, to: 2026.5, place: above, dashed: true }
+    - label: Formation
+      kind: study
+      bars:
+        - { label: Bac S, from: 2018.45, to: 2018.55, place: above }
+        - { label: Bachelor PSB, from: 2019.7, to: 2022.5, place: above }
+        - { label: Master PSB, from: 2022.7, to: 2024.5, place: above }
+        - { label: Le Wagon, from: 2026.5, to: 2026.75, place: above, align: end }
 
 experiences:
-  - role: Année de transition
-    company: Sabbatique puis reconversion Data
-    location: ""
-    start: "2025"
-    end: "2026"
-    description: Année sabbatique, puis reconversion vers la Data avec le bootcamp Data Analyst du Wagon.
-    highlights: []
-    tags: []
-
   - role: Analyste financier
     company: MB Capital
     location: Paris
-    start: Sept. 2022
-    end: Sept. 2024
-    description: ""
+    period: Sept. 2022 — Sept. 2024
+    duration: 2 ans
     highlights:
       - Gestion de la trésorerie quotidienne
       - Clôture de l'exercice comptable en lien direct avec un expert-comptable
       - Création de business plans pour l'achat et la transformation d'actifs
       - Élaboration de dossiers d'investissement pour l'acquisition d'actifs
-    tags: [Trésorerie, Business plan, Investissement immobilier, Excel]
+    tags: [Trésorerie, Business plan, Investissement immobilier]
 
   - role: Business Developer / Analyste financier
     company: LUCY
     location: Montrouge
-    start: Sept. 2021
-    end: Août 2022
-    description: ""
+    period: Sept. 2021 — Août 2022
+    duration: 1 an
     highlights:
       - Création d'un CRM
       - Prise de rendez-vous clients
@@ -63,57 +99,58 @@ experiences:
   - role: Contrôleur financier
     company: Generis Capital Partners
     location: Paris
-    start: Juin 2021
-    end: Août 2021
-    description: ""
+    period: Juin 2021 — Août 2021
+    duration: 3 mois
     highlights:
       - Synthèse des dossiers d'investissement
       - Contrôle et suivi des procès-verbaux
       - Actualisation des informations sur les investissements
     tags: [Contrôle, Investissement]
 
+transition:
+  period: 2025 — 2026
+  text: Année sabbatique, puis reconversion vers la data avec le bootcamp Data Analyst du Wagon.
+
 education:
   - degree: Bootcamp Data Analyst
     school: Le Wagon
-    start: Juil. 2026
-    end: Sept. 2026
+    period: Juil. — Sept. 2026
     description: >-
       Nettoyage et structuration de jeux de données réels, requêtes complexes sur
       bases cloud, tableaux de bord interactifs pour des publics non techniques,
-      travail en mode projet avec Git et dépôts partagés.
+      travail en mode projet avec Git.
   - degree: Master Corporate Finance
     school: Paris School of Business
-    start: "2022"
-    end: "2024"
+    period: 2022 — 2024
     description: Analyse financière, gestion de projet, comptabilité générale.
   - degree: Bachelor Banque & Finance
     school: Paris School of Business
-    start: "2019"
-    end: "2022"
+    period: 2019 — 2022
     description: ""
   - degree: Baccalauréat scientifique
     school: Lycée Jean Paul II, Rouen
-    start: ""
-    end: "2018"
+    period: "2018"
     description: ""
 
 skills:
   - group: Data & Analytics
-    items: [Python (Pandas), SQL, BigQuery, Power BI, Looker Studio, Git & GitHub]
+    items: [SQL, BigQuery, Python (Pandas), Power BI, Looker Studio, Git & GitHub]
+  - group: Finance
+    items: [Business plans, Dossiers d'investissement, Analyse financière, Trésorerie, Clôture comptable, Levée de fonds]
   - group: Bureautique
     items: [Excel, PowerPoint, Word, OneNote, Access, Canva]
-  - group: Certifications
-    items: [AMF, Bloomberg, TOEIC]
+
+certifications: [AMF, Bloomberg, TOEIC]
 
 languages:
-  - name: Français
-    level: Langue maternelle
-  - name: Anglais
-    level: Professionnel
-  - name: Espagnol
-    level: Notions
+  - { name: Français, level: Langue maternelle, dots: 3 }
+  - { name: Anglais, level: Professionnel, dots: 2 }
+  - { name: Espagnol, level: Notions, dots: 1 }
 
 interests:
-  - "Golf & rugby — championnats de France"
-  - Chef scout
-  - "Voyages : États-Unis, Europe, Maroc, Asie, Nouvelle-Zélande"
+  - title: Golf & rugby
+    text: Compétition jusqu'aux championnats de France.
+  - title: Chef scout
+    text: Engagement associatif dans le scoutisme.
+  - title: Voyages
+    text: États-Unis, Europe, Maroc, Asie, Nouvelle-Zélande.
