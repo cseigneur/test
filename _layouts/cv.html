@@ -73,19 +73,19 @@
             <div class="card-head">
               <div>
                 <h3>{{ job.role }}</h3>
-                <p class="company">{{ job.company }}{% if job.location %} · {{ job.location }}{% endif %}</p>
+                <p class="company">{{ job.company }}{% if job.location and job.location != "" %} · {{ job.location }}{% endif %}</p>
               </div>
               <span class="period">{{ job.start }} — {{ job.end }}</span>
             </div>
             {%- if job.description and job.description != "" %}
             <p class="desc">{{ job.description }}</p>
             {%- endif %}
-            {%- if job.highlights %}
+            {%- if job.highlights.size > 0 %}
             <ul class="highlights">
               {%- for h in job.highlights %}<li>{{ h }}</li>{% endfor %}
             </ul>
             {%- endif %}
-            {%- if job.tags %}
+            {%- if job.tags.size > 0 %}
             <div class="tags">{% for t in job.tags %}<span class="tag">{{ t }}</span>{% endfor %}</div>
             {%- endif %}
           </div>
@@ -99,7 +99,7 @@
       <div class="grid-2">
         {%- for ed in cv.education %}
         <div class="card reveal">
-          <span class="period">{{ ed.start }} — {{ ed.end }}</span>
+          <span class="period">{% if ed.start and ed.start != "" %}{{ ed.start }} — {% endif %}{{ ed.end }}</span>
           <h3>{{ ed.degree }}</h3>
           <p class="company">{{ ed.school }}</p>
           {%- if ed.description and ed.description != "" %}<p class="desc">{{ ed.description }}</p>{% endif %}
